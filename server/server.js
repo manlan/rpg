@@ -2,7 +2,10 @@
 var requestProcessor = { process : function(cmmd) { return cmmd; } };
 /* */
 
+connectedPlayers = {}; 
+
 require('net').createServer(function (localSocket) {
+    connectedPlayers[localSocket.remoteAddress] = localSocket;
 
     localSocket.on('data', function (data) {
         console.log(localSocket.remoteAddress + " says: " + data.toString());
@@ -11,7 +14,8 @@ require('net').createServer(function (localSocket) {
     });
 
     localSocket.on('end', function() {
-      // do something
+      console.info(localSocket.remoteAddress + ' disconnected.');
+      delete connectedPlayers[localSocket.remoteAddress];
     });
 })
 
