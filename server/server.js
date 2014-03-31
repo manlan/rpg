@@ -1,21 +1,22 @@
 /* temporary */
-var requestProcessor = { process : function(cmmd) { return cmmd; } };
+var requestProcessor = { process : function(cmmd) { return cmmd + '\n\r'; } };
 /* */
 
 connectedPlayers = {}; 
 
 require('net').createServer(function (localSocket) {
-    connectedPlayers[localSocket.remoteAddress] = localSocket;
+    var remoteAddress = localSocket.remoteAddress;
+    connectedPlayers[remoteAddress] = localSocket;
 
     localSocket.on('data', function (data) {
-        console.log(localSocket.remoteAddress + " says: " + data.toString());
+        console.log(remoteAddress + " says: " + data.toString());
         var response = requestProcessor.process(data.toString());
         localSocket.write(response);
     });
 
     localSocket.on('end', function() {
-      console.info(localSocket.remoteAddress + ' disconnected.');
-      delete connectedPlayers[localSocket.remoteAddress];
+      console.info(remoteAddress + ' disconnected.');
+      delete connectedPlayers[remoteAddress];
     });
 })
 
