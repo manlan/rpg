@@ -23,7 +23,6 @@ public class MoveObject : MonoBehaviour
             pointer.SetActive (true);
         } catch (MouseDoesNotHitException ignore) {
         }
-
     }
     
     void OnMouseExit ()

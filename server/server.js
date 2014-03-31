@@ -5,13 +5,20 @@ var requestProcessor = { process : function(cmmd) { return cmmd + '\n\r'; } };
 connectedPlayers = {}; 
 
 require('net').createServer(function (localSocket) {
+    function broadcast(msg) {
+      for (var addr in connectedPlayers) {
+        connectedPlayers[addr].write(msg);
+      }
+    }
+
     var remoteAddress = localSocket.remoteAddress;
     connectedPlayers[remoteAddress] = localSocket;
 
     localSocket.on('data', function (data) {
         console.log(remoteAddress + " says: " + data.toString());
         var response = requestProcessor.process(data.toString());
-        localSocket.write(response);
+
+        broadcast(response);
     });
 
     localSocket.on('end', function() {

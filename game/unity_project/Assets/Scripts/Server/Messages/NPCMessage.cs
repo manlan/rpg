@@ -10,7 +10,7 @@ class NPCMessage : ServerMessage
         this.nickname = nickname;
     }
 
-    public string BuildMessage ()
+    public override string BuildMessage ()
     {
     //                             \\
     //                             \\

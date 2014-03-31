@@ -1,13 +1,13 @@
 public class MovementMessage : ServerMessage
 {
     private readonly IntVector3 destination;
-
+   
     public MovementMessage (IntVector3 destination)
     {
         this.destination = destination;
     }
 
-    public string BuildMessage ()
+    public override string BuildMessage ()
     {
         //                             \\
         //                             \\
