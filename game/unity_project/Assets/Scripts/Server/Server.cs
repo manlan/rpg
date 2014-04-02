@@ -14,7 +14,7 @@ public class Server
     public static void Start ()
     {
         client.Connect ("127.0.0.1", 8765);
-        StartReading();
+        StartReading(); 
     }
 
     //
@@ -36,7 +36,7 @@ public class Server
 
     private class StateObject
     {
-        public const int BufferSize = 3;
+        public const int BufferSize = 256;
         public readonly byte[] buffer;
         public readonly StringBuilder result;
         

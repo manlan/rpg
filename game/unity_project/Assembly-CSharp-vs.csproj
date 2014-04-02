@@ -50,13 +50,14 @@
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\Misc\IntVector3.cs" />
      <Compile Include="Assets\Scripts\Monster.cs" />
-     <Compile Include="Assets\Scripts\MoveObject.cs" />
+     <Compile Include="Assets\Scripts\MovePlayer.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
      <Compile Include="Assets\Scripts\NPC.cs" />
      <Compile Include="Assets\Scripts\Server\Messages\MovementMessage.cs" />
      <Compile Include="Assets\Scripts\Server\Messages\NPCMessage.cs" />
      <Compile Include="Assets\Scripts\Server\Messages\ServerMessage.cs" />
      <Compile Include="Assets\Scripts\Server\Server.cs" />
+     <Compile Include="Assets\Scripts\SmoothFollow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

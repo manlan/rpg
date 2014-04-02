@@ -3,12 +3,14 @@ using System.Collections;
 
 public class Character : MonoBehaviour
 {
-
-    public string nickname;
     private Color originalColor;
+    private Movement movement;
+    public int id;
 
     void Start ()
     {
+        id = Random.Range (1, 100);
+        movement = new Movement (this);
         originalColor = transform.renderer.materials [1].color;
     }
     
@@ -18,12 +20,18 @@ public class Character : MonoBehaviour
     }
 
     void OnCollisionExit ()
-    {   
+    {
         transform.renderer.materials [1].color = originalColor;
     }
 
-    void FixedUpdate ()
+    public void MoveTo (IntVector3 destination)
     {
-        transform.Rotate (Vector3.up * 36 * Time.deltaTime);
+        movement.GoTo (destination);
+    }
+
+    void OnMouseUpAsButton ()
+    {
+        //TODO: remove this. temporary.
+        Application.setPlayer(this);
     }
 }
