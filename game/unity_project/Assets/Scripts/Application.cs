@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Application : MonoBehaviour
 {
-
-    public static readonly IDictionary characters = new Hashtable();
     private static Character currentPlayer;
 
     void Start ()
