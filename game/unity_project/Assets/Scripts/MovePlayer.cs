@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MovePlayer : MonoBehaviour
@@ -11,7 +11,7 @@ public class MovePlayer : MonoBehaviour
     void OnMouseDrag ()
     {   
         try {
-            Application.player().MoveTo (FindDestination ());
+            Application.currentPlayer().AskServerToMoveTo (FindDestination ());
         } catch (MouseDoesNotHitException ignore) {
         }
     }

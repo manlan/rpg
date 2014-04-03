@@ -1,9 +1,13 @@
+using UnityEngine;
+using System.Collections;
+
 public abstract class ServerMessage
 {
-    public abstract string BuildMessage();
+    public abstract string BuildMessage ();
 
-    public static ServerMessage FromString(string message) {
-        return null;
+    public static string[] FromString (string message)
+    {
+        return message.Split('|');
     }
 }
 

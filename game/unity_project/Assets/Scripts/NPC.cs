@@ -21,8 +21,4 @@ public class NPC : MonoBehaviour
     {
         onMouseOverLight.SetActive (false);
     }
-
-    void OnMouseUpAsButton() {
-        Server.Write(new NPCMessage(nickname));
-    }
 }

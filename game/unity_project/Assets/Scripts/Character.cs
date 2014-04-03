@@ -5,11 +5,10 @@ public class Character : MonoBehaviour
 {
     private Color originalColor;
     private Movement movement;
-    public int id;
+    public int id = Random.Range (1, 100);
 
-    void Start ()
+    void Awake ()
     {
-        id = Random.Range (1, 100);
         movement = new Movement (this);
         originalColor = transform.renderer.materials [1].color;
     }
@@ -26,12 +25,17 @@ public class Character : MonoBehaviour
 
     public void MoveTo (IntVector3 destination)
     {
-        movement.GoTo (destination);
+        movement.MoveTo (destination);
+    }
+
+    public void AskServerToMoveTo (IntVector3 destination)
+    {
+        movement.AskServerToMoveTo (destination);
     }
 
     void OnMouseUpAsButton ()
     {
         //TODO: remove this. temporary.
-        Application.setPlayer(this);
+        Application.setPlayer (this);
     }
 }

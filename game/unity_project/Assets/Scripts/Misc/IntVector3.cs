@@ -12,9 +12,9 @@ public class IntVector3
     public IntVector3 (Vector3 vector3)
     : this(vector3.x, vector3.y, vector3.z) {}
 
-    public override bool Equals (object obj)
+    public bool Equals (IntVector3 otherIntVector3)
     {
-        return vector3.Equals (obj);
+        return otherIntVector3 == null ? false : vector3.Equals (otherIntVector3.vector3);
     }
 
     public override int GetHashCode ()

@@ -12,6 +12,8 @@ require('net').createServer(function (localSocket) {
     }
 
     var remoteAddress = localSocket.remoteAddress;
+    console.log(remoteAddress);
+    
     connectedPlayers[remoteAddress] = localSocket;
 
     localSocket.on('data', function (data) {

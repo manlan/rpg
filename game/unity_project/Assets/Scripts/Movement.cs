@@ -5,6 +5,7 @@ public class Movement
 {
     private float velocity = 1.0f;
     private readonly Character character;
+    private IntVector3 lastDestinationRequested;
 
     public Movement (Character character)
     {
@@ -15,13 +16,17 @@ public class Movement
     //
 
 
-    public void GoTo (IntVector3 destination)
+    public void AskServerToMoveTo (IntVector3 destination)
     {
+
+        if (destination.Equals(lastDestinationRequested))
+            return;
+
+        lastDestinationRequested = destination;
         Server.Write (new MovementMessage (destination));
-        MoveTo (destination);
     }
 
-    private void MoveTo (IntVector3 destination)
+    public void MoveTo (IntVector3 destination)
     {
         character.StopAllCoroutines(); //FIXME: Dangerous
         character.StartCoroutine (Move(destination));

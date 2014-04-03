@@ -13,8 +13,8 @@ public class Server
     
     public static void Start ()
     {
-        client.Connect ("127.0.0.1", 8765);
-        StartReading(); 
+        client.Connect ("192.168.0.109", 8765);
+        StartReading ();
     }
 
     //
@@ -34,42 +34,69 @@ public class Server
     //
     // reading
 
-    private class StateObject
+    private class SocketIncoming
     {
+        public readonly static Queue commandQueue = new Queue ();
         public const int BufferSize = 256;
         public readonly byte[] buffer;
-        public readonly StringBuilder result;
+        public String commands;
         
-        public StateObject ()
+        public SocketIncoming ()
         {
             this.buffer = new byte[BufferSize];
-            this.result = new StringBuilder ();
+            this.commands = String.Empty;
+        }
+
+        public void StoreNewChunk (IAsyncResult asyncResult)
+        {
+            int byteChunk = client.EndReceive (asyncResult);
+            string chunk = Encoding.ASCII.GetString (buffer, 0, byteChunk);
+            this.commands += chunk;
+        }
+
+        public void EnqueueCommandsReceived ()
+        {
+            if (!commands.Contains (";")) {
+                Debug.Log ("No command received");
+                return;
+            }
+
+            string[] commandArray = commands.Split (';');
+            
+            foreach (string c in commandArray) {
+                string command = c.Trim ();
+                if (!String.IsNullOrEmpty (command))
+                    commandQueue.Enqueue(command);
+            }
+
+            this.commands = commandArray [commandArray.Length - 1];
         }
     }
 
     private static void StartReading ()
     {
-        Receive (new StateObject ());
+        Receive (new SocketIncoming ());
     }
 
-    static void Receive (StateObject state)
+    static void Receive (SocketIncoming incomming)
     {
-        client.BeginReceive (state.buffer, 0, StateObject.BufferSize, 0, ReceiveCallback, state);
+        client.BeginReceive (incomming.buffer, 0, SocketIncoming.BufferSize, 0, ReceiveCallback, incomming);
     }
     
     private static void ReceiveCallback (IAsyncResult asyncResult)
     {
-        StateObject state = (StateObject) asyncResult.AsyncState;
-    
-        // receives the data.
-        int bytesRead = client.EndReceive (asyncResult);
-        string receivedString = Encoding.ASCII.GetString (state.buffer, 0, bytesRead);
-        state.result.Append (receivedString);
-
-        // put commands read in this buffer in a queue.
-        Debug.Log (state.result.ToString ());
-      
-        // continues reading recursively.
-        Receive (state);       
+        SocketIncoming incomming = (SocketIncoming)asyncResult.AsyncState;
+   
+        incomming.StoreNewChunk (asyncResult);
+        incomming.EnqueueCommandsReceived ();
+        Receive (incomming);       
     }
+
+    public static void ProcessNext ()
+    {
+        if (SocketIncoming.commandQueue.Count > 0)
+            MovementMessage.Process ((string) SocketIncoming.commandQueue.Dequeue());
+
+    }
+
 }
